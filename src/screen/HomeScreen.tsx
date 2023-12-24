@@ -24,8 +24,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
     const onStartTimer = () => {
         console.log(selectedRounds);
-        navigation.navigate('Rounds');
-    }
+        navigation.navigate('Rounds', { rounds: selectedRounds });
+    };
     return (
         <View
             style={{
