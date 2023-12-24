@@ -52,6 +52,7 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
                     console.log(round, rounds);
                     if (round === rounds) {
                         setIsRunning(false);
+                        navigation.navigate("Congrats")
                         return 0;
                     }
                     if (rest === round) {
@@ -177,14 +178,22 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
             </View>
         )
     }
+    const RestView = () => {
+        if (round !== rest) {
+            return <></>;
+        }
+        return <View>
+            <Text>congrats</Text>
+        </View>
+    }
     const FooterTimerText = () => {
         return (
-            <View style={styles.fooeterTimerTextWrapper}>
-                <Text style={styles.timerRoundText}>Session 1 - Round 1</Text>
+            <View style={styles.footerTimerTextWrapper}>
+                <Text style={styles.timerRoundText}>Session {session} - Round {round}</Text>
                 <Text style={styles.timerDurationText}>1 Minute</Text>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={styles.timeCounter}>00 : </Text>
-                    <Text style={styles.timeCounter}>{timer < 10 ? '0' + timer : timer}</Text>
+                    <Text style={styles.timeCounter}>{timer < 10 ? timer < 0 ? '00' : ('0' + timer) : ''}</Text>
                 </View>
             </View>
         )
@@ -221,6 +230,7 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
     const Footer = () => {
         return (
             <View style={styles.footer}>
+                <RestView />
                 <FooterTimer />
                 <FooterTimerText />
                 <FooterTimerToggle />
@@ -332,28 +342,32 @@ const styles = StyleSheet.create({
     footerTimerWraper: {
         top: 10,
     },
-    fooeterTimerTextWrapper: {
-        alignItems: 'center',
-        position: 'absolute',
-        top: '15%',
+    footerTimerTextWrapper: {
+
+        transform: [{ translateY: -135 }],
+        textAlign: 'center',
     },
     timerRoundText: {
         color: '#000',
         fontSize: 16,
         fontWeight: '600',
         fontFamily: 'Urbanist',
+        textAlign: 'center',
     },
     timerDurationText: {
         color: '#000',
         fontSize: 20,
         fontWeight: '700',
         fontFamily: 'Urbanist',
+        textAlign: 'center',
     },
     timeCounter: {
         color: '#D00D0D',
         fontSize: 16,
         fontWeight: '600',
         fontFamily: 'Urbanist',
+        textAlign: 'center',
+        // width: 100
     },
     footerTimerToggleWrapper: {
         alignItems: 'center',
