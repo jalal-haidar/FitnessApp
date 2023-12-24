@@ -16,14 +16,15 @@ import Round1 from './src/screen/Round1';
 import SplashScreen from './src/screen/SplashScreen';
 import Onboard from './src/screen/onboard';
 import Round from './src/screen/Round';
-import Layout from './src/screen/Layout';
-import Layout2 from './src/screen/Layout2';
+import Layout from './src/screen/layout/Layout';
+import Layout2 from './src/screen/layout/Layout2';
 import CongratsScreen from './src/screen/CongratsScreen';
 import TimerComponent from './src/screen/Timer';
 import Round3 from './src/screen/Rounds3';
+import AppNavigator from './src/navigation/navigator';
 
 export default function App() {
-  return <Round3 />;
+  return <React.StrictMode><AppNavigator /></React.StrictMode>;
 }
 // STYLESHEET
 
