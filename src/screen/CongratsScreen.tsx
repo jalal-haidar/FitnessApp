@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, Text, StyleSheet, Image, } from 'react-native';
+import FastImage from 'react-native-fast-image';
 const CongratsScreen = () => {
     const Header = () => {
         return (
@@ -16,10 +17,12 @@ const CongratsScreen = () => {
     const CongratsGif = () => {
         return (
             <View style={styles.gifWrapper}>
-                <Image
-                    resizeMode='cover'
-                    style={styles.gif}
+                <FastImage
+                    // resizeMode='cover'
                     source={require('../assets/CongratsGIF.gif')}
+                    style={styles.gif}
+                    resizeMode={FastImage.resizeMode.contain}
+
                 />
             </View>
         )
@@ -75,7 +78,7 @@ const styles = StyleSheet.create({
     gif: {
         width: 154,
         height: 154,
-        backgroundColor: 'red',
+        // backgroundColor: 'red',
     },
     congratsTextWrapper: {
         // backgroundColor: 'green',

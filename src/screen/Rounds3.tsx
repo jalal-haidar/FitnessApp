@@ -1,7 +1,88 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-const Layout = () => {
+
+interface Round3ComponentProps { }
+
+const Round3: React.FC<Round3ComponentProps> = () => {
+
+    const [timer, setTimer] = useState<number>(60);
+    const [isActive, setIsActive] = useState<boolean>(false);
+    const [isPaused, setIsPaused] = useState<boolean>(false);
+    const countRef = useRef<NodeJS.Timeout | null>(null);
+
+    // function to handle the start button press
+    const handleStart = () => {
+        setIsActive(true);
+        setIsPaused(false);
+        if (countRef.current) {
+            clearInterval(countRef.current);
+        }
+        countRef.current = setInterval(() => {
+            setTimer(prevTimer => {
+                if (prevTimer === 0) {
+                    // Timer reached 0, clear the interval and reset
+                    clearInterval(countRef.current ?? 0);
+                    handleReset(); // Call your resetTimer function here
+                    return prevTimer;
+                }
+                return prevTimer - 1
+            });
+        }, 1000);
+    };
+    // function to handle the pause button press
+    const handlePause = () => {
+        if (countRef.current) {
+            clearInterval(countRef.current);
+        }
+        setIsPaused(true);
+    };
+    // function to handle the continue button press
+    const handleContinue = () => {
+        setIsPaused(false);
+        if (countRef.current) {
+            clearInterval(countRef.current);
+        }
+        countRef.current = setInterval(() => {
+            setTimer(prevTimer => {
+                if (prevTimer === 0) {
+                    // Timer reached 0, clear the interval and reset
+                    clearInterval(countRef.current ?? 0);
+                    handleReset(); // Call your resetTimer function here
+                    return prevTimer;
+                }
+                return prevTimer - 1;
+            });
+        }, 1000);
+    };
+    // function to handle the reset button press
+    const handleReset = () => {
+        setTimer(0);
+        setIsActive(false);
+        setIsPaused(false);
+        if (countRef.current) {
+            clearInterval(countRef.current);
+        }
+    };
+
+    useEffect(() => {
+        // Automatically start the timer when the component is rendered
+        handleStart();
+
+        // Clear the interval when the component unmounts
+        return () => { };
+    }, []);
+
+
+
+
+
+
+
+
+
+
+
     const Header = () => {
         return (
             <View style={styles.header}>
@@ -95,7 +176,7 @@ const Layout = () => {
                 <Text style={styles.timerDurationText}>1 Minute</Text>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={styles.timeCounter}>00 : </Text>
-                    <Text style={styles.timeCounter}>00</Text>
+                    <Text style={styles.timeCounter}>{timer < 10 ? '0' + timer : timer}</Text>
                 </View>
             </View>
         )
@@ -103,21 +184,29 @@ const Layout = () => {
     const FooterTimerToggle = () => {
         return (
             <View style={styles.footerTimerToggleWrapper}>
+
                 <Image
                     style={styles.footerTimerToggle}
                     resizeMode="cover"
                     source={require('../assets/timerToggle.png')}
                 />
-                <Image
-                    style={styles.footerPLayPauseIcon}
-                    resizeMode="cover"
-                    source={require('../assets/pauseIcon.png')}
-                />
-                <Image
-                    style={styles.footerPLayPauseIcon}
-                    resizeMode="cover"
-                    source={require('../assets/playIcon.png')}
-                />
+                {isActive && !isPaused ? (
+                    <TouchableOpacity onPress={handlePause}>
+                        <Image
+                            style={styles.footerPLayPauseIcon}
+                            resizeMode="cover"
+                            source={require('../assets/pauseIcon.png')}
+                        />
+                    </TouchableOpacity>
+                ) : (
+                    <TouchableOpacity onPress={handleContinue}>
+                        <Image
+                            style={styles.footerPLayPauseIcon}
+                            resizeMode="cover"
+                            source={require('../assets/playIcon.png')}
+                        />
+                    </TouchableOpacity>
+                )}
             </View>
         )
     }
@@ -261,6 +350,7 @@ const styles = StyleSheet.create({
     footerTimerToggleWrapper: {
         alignItems: 'center',
         position: 'absolute',
+        // justifyContent: 'center',
 
     },
     footerTimerToggle: {
@@ -279,4 +369,4 @@ const styles = StyleSheet.create({
         width: '70%',
     },
 });
-export default Layout;
+export default Round3;

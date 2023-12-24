@@ -19,9 +19,11 @@ import Round from './src/screen/Round';
 import Layout from './src/screen/Layout';
 import Layout2 from './src/screen/Layout2';
 import CongratsScreen from './src/screen/CongratsScreen';
+import TimerComponent from './src/screen/Timer';
+import Round3 from './src/screen/Rounds3';
 
 export default function App() {
-  return <CongratsScreen />;
+  return <Round3 />;
 }
 // STYLESHEET
 

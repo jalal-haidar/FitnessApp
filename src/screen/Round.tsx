@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
     lowerSection: {
         backgroundColor: 'gray',
         flex: 1,
-
     },
     congratsWrapper: {
         backgroundColor: 'red',
