@@ -14,8 +14,7 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
     const rounds = route.params?.rounds || 0;
     const defaultTimerTime = 5;
     const [timer, setTimer] = useState<number>(defaultTimerTime);
-    const [isRunning, setIsRunning] = useState<boolean>(false);
-    const [isPaused, setIsPaused] = useState<boolean>(false);
+    const [isRunning, setIsRunning] = useState<boolean>(true);
     const [rest, setRest] = useState<number>(0);
     const [round, setRound] = useState<number>(1);
     const [session, setSession] = useState<number>(1);
@@ -23,33 +22,19 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
 
     // function to handle the start button press
     const handleStart = () => {
+        console.log('start');
         setIsRunning(true);
 
     };
     // function to handle the pause button press
     const handlePause = () => {
-        if (interval) {
-            clearInterval(interval);
-        }
+        console.log('pause');
         setIsRunning(false);
     };
     // function to handle the continue button press
     const handleContinue = () => {
+        console.log('continue');
         setIsRunning(true);
-        if (interval) {
-            clearInterval(interval);
-        }
-        // interval = setInterval(() => {
-        //     setTimer(prevTimer => {
-        //         if (prevTimer === 0) {
-        //             // Timer reached 0, clear the interval and reset
-        //             clearInterval(interval ?? 0);
-        //             handleReset(); // Call your resetTimer function here
-        //             return prevTimer;
-        //         }
-        //         return prevTimer - 1;
-        //     });
-        // }, 1000);
     };
     // function to handle the reset button press
     const handleReset = () => {
@@ -61,6 +46,7 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
     const runTimer = () => {
         return setInterval(() => {
             setTimer(prevTimer => {
+                console.log(isRunning, timer);
                 if (!isRunning) { return prevTimer; }
                 else if (prevTimer === 0) {
                     console.log(round, rounds);
@@ -87,12 +73,6 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
     }
     useEffect(() => {
         let interval: any = null;
-        // setRound(1);
-        // setSession(1);
-        setTimeout(() => {
-            // Automatically start the timer when the component is rendered
-            handleStart();
-        }, 1000);
 
         if (isRunning) {
             interval = runTimer();
