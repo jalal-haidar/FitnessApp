@@ -2,9 +2,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
-interface Round456Layout { }
+interface Round5Layout { }
 
-const Round456Layout: React.FC<Round456Layout> = () => {
+const Round5Layout: React.FC<Round5Layout> = () => {
 
     const [timer, setTimer] = useState<number>(60);
     const [isActive, setIsActive] = useState<boolean>(false);
@@ -98,33 +98,18 @@ const Round456Layout: React.FC<Round456Layout> = () => {
         return (
             <View style={styles.bodyTextWrapper}>
                 <Text style={styles.titleText}>Exercise</Text>
-                <Text style={styles.bodyText}>3 Rounds - 15 Minutes</Text>
+                <Text style={styles.bodyText}>5 Rounds - 25 Minutes</Text>
             </View>
         )
     }
     const BodyButtons = () => {
         return (
             <View style={styles.bodyButtonWrapper}>
-                <SessionButtons />
                 <RoundButtons />
             </View>
         )
     }
-    const SessionButtons = () => {
-        return (
-            <View style={styles.sessionButtonsWrapper}>
-                <TouchableOpacity disabled={true} style={styles.sessionButton}>
-                    <Text style={styles.sessionButtonText}>Session 1</Text>
-                </TouchableOpacity>
-                <TouchableOpacity disabled={true} style={styles.sessionButton}>
-                    <Text style={styles.sessionButtonText}>Session 2</Text>
-                </TouchableOpacity>
-                <TouchableOpacity disabled={true} style={styles.sessionButton}>
-                    <Text style={styles.sessionButtonText}>Session 3</Text>
-                </TouchableOpacity>
-            </View>
-        )
-    }
+
     const RoundButtons = () => {
         return (
             <View style={styles.roundButtonsWrapper}>
@@ -132,16 +117,16 @@ const Round456Layout: React.FC<Round456Layout> = () => {
                     <Text style={styles.roundButtonText}>Round 1</Text>
                 </TouchableOpacity>
                 <TouchableOpacity disabled={true} style={styles.roundButton}>
-                    <Text style={styles.roundButtonText}>Rest</Text>
-                </TouchableOpacity>
-                <TouchableOpacity disabled={true} style={styles.roundButton}>
                     <Text style={styles.roundButtonText}>Round 2</Text>
                 </TouchableOpacity>
                 <TouchableOpacity disabled={true} style={styles.roundButton}>
-                    <Text style={styles.roundButtonText}>Rest</Text>
+                    <Text style={styles.roundButtonText}>Round 3</Text>
                 </TouchableOpacity>
                 <TouchableOpacity disabled={true} style={styles.roundButton}>
-                    <Text style={styles.roundButtonText}>Round 3</Text>
+                    <Text style={styles.roundButtonText}>Round 4</Text>
+                </TouchableOpacity>
+                <TouchableOpacity disabled={true} style={styles.roundButton}>
+                    <Text style={styles.roundButtonText}>Round 5</Text>
                 </TouchableOpacity>
 
 
@@ -172,8 +157,8 @@ const Round456Layout: React.FC<Round456Layout> = () => {
     const FooterTimerText = () => {
         return (
             <View style={styles.fooeterTimerTextWrapper}>
-                <Text style={styles.timerRoundText}>Session 1 - Round 1</Text>
-                <Text style={styles.timerDurationText}>1 Minute</Text>
+                <Text style={styles.timerRoundText}>Round 1</Text>
+                <Text style={styles.timerDurationText}>5 Minutes</Text>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={styles.timeCounter}>00 : </Text>
                     <Text style={styles.timeCounter}>{timer < 10 ? '0' + timer : timer}</Text>
@@ -271,28 +256,7 @@ const styles = StyleSheet.create({
 
 
     },
-    sessionButtonsWrapper: {
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
 
-    },
-    sessionButton: {
-        width: 100,
-        height: 30,
-        backgroundColor: '#F4F4F4',
-        borderRadius: 31,
-        flexShrink: 0,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    sessionButtonText: {
-        color: '#1A1A1A',
-        fontWeight: '500',
-        fontSize: 12,
-        fontFamily: 'Urbanist',
-        alignSelf: 'center',
-    },
     roundButtonsWrapper: {
         width: '100%',
         flexDirection: 'row',
@@ -308,7 +272,7 @@ const styles = StyleSheet.create({
 
     },
     roundButtonText: {
-        color: '#828282',
+        color: '#1A1A1A',
         fontSize: 12,
         fontWeight: '500',
         fontFamily: 'Urbanist',
@@ -369,4 +333,4 @@ const styles = StyleSheet.create({
         width: '70%',
     },
 });
-export default Round456Layout;
+export default Round5Layout;

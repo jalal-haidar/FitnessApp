@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import {
@@ -12,9 +13,12 @@ import {
   NativeEventEmitter,
 } from 'react-native';
 import HomeScreen from './src/screen/HomeScreen';
+import Round4Layout from './src/layouts/Round4Layout';
+import Round5Layout from './src/layouts/Round5Layout';
+import Round6Layout from './src/layouts/Round6Layout';
 
 export default function App() {
-  return <HomeScreen />;
+  return <Round6Layout />;
 }
 // STYLESHEET
 
