@@ -12,9 +12,16 @@ import {
   NativeEventEmitter,
 } from 'react-native';
 import HomeScreen from './src/screen/HomeScreen';
+import Round1 from './src/screen/Round1';
+import SplashScreen from './src/screen/SplashScreen';
+import Onboard from './src/screen/onboard';
+import Round from './src/screen/Round';
+import Layout from './src/screen/Layout';
+import Layout2 from './src/screen/Layout2';
+import CongratsScreen from './src/screen/CongratsScreen';
 
 export default function App() {
-  return <HomeScreen />;
+  return <CongratsScreen />;
 }
 // STYLESHEET
 
