@@ -146,11 +146,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     selectedButton: {
-        // TODO: change the color codes
-        backgroundColor: 'red',
+        backgroundColor: '#D00D0D',
     },
     selectedButtonText: {
-        color: 'white',
+        color: '#FFFFFF',
     },
     buttonText: {
         fontFamily: 'Urbanist',

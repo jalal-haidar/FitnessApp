@@ -18,7 +18,7 @@ import Round5Layout from './src/layouts/Round5Layout';
 import Round6Layout from './src/layouts/Round6Layout';
 
 export default function App() {
-  return <Round6Layout />;
+  return <HomeScreen />;
 }
 // STYLESHEET
 
