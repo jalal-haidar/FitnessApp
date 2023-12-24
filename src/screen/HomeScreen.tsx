@@ -30,14 +30,15 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         <View
             style={{
                 backgroundColor: '#FFFFFF',
-                flex: 1,
+                // flex: 1,
+                height: '100%',
                 // overflow: 'hidden',
             }}>
             {/* CHILDREN of MAIN VIEW */}
             <View
                 style={{
                     // backgroundColor: 'gold',
-                    flex: 1,
+                    height: '50%',
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}>
@@ -51,7 +52,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                 <View
                     style={{
                         alignItems: 'center',
-                        rowGap: 15,
+                        rowGap: 20,
+                        // backgroundColor: 'black',
                         top: 30,
                     }}>
                     <Text style={styles.titleText}>Welcome To <Text style={styles.innerText}>Fitness Hoopligans</Text></Text>
@@ -87,8 +89,10 @@ const styles = StyleSheet.create({
         // marginBottom: 20,
     },
     lowerContainer: {
-        backgroundColor: '#FFFFFF',
+        // backgroundColor: '#FFFFFF',
+        backgroundColor: 'gold',
         flex: 1,
+        height: '50%',
         // borderTopWidth: 1,
         // borderTopColor: 'black',
         // borderBlockColor: 'black',
@@ -115,16 +119,16 @@ const styles = StyleSheet.create({
     },
 
     titleText: {
-        fontFamily: 'sans-serif',
-        // fontFamily: 'Arial',
-        fontSize: 25,
-        fontWeight: 'bold',
+        fontFamily: 'Urbanist',
+        fontSize: 24,
+        fontWeight: '700',
         color: 'black',
     },
     baseText: {
-        fontFamily: 'sans-serif',
-        fontWeight: 'bold',
-        color: 'black',
+        fontFamily: 'Urbanist',
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#000000',
     },
     innerText: {
         fontWeight: 'bold',
@@ -133,11 +137,11 @@ const styles = StyleSheet.create({
     button: {
         // backgroundColor: '#841584',
         // padding: 10,
-        borderRadius: 10,
+        borderRadius: 8,
         width: '75%',
         height: '9%',
-        borderWidth: 1.5,
-        borderColor: 'red',
+        borderWidth: 1,
+        borderColor: '#D00D0D',
         flexGrow: 1,
         justifyContent: 'center',
     },
@@ -149,16 +153,17 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     buttonText: {
-        color: 'black',
-        fontFamily: 'sans-serif',
+        fontFamily: 'Urbanist',
         fontSize: 16,
+        fontWeight: '500',
+        color: '#2F2F2F',
 
         alignSelf: 'center',
     },
     startButton: {
-        backgroundColor: 'black',
+        backgroundColor: '#1A1A1A',
         // padding: 10,
-        borderRadius: 10,
+        borderRadius: 8,
         width: '75%',
         height: '9%',
         borderWidth: 1.5,
@@ -167,9 +172,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     startButtomText: {
-        color: 'white',
-        fontFamily: 'sans-serif',
+        fontFamily: 'Urbanist',
+        color: '#FFFFFF',
         fontSize: 16,
+        fontWeight: '500',
 
         alignSelf: 'center',
     },
