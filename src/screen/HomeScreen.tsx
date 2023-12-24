@@ -1,14 +1,31 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, TouchableOpacity, StyleSheet } from 'react-native';
 import {
-
     View,
     Text,
 } from 'react-native';
+interface HomeScreenProps {
+    navigation: any; // You can use a more specific type if needed
+}
+const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+    const [selectedRounds, setSelectedRounds] = useState<number>(0);
+    const updateSelectedRounds = (newValue: number) => {
+        setSelectedRounds(newValue);
+    };
 
-const HomeScreen = () => {
+    const getButtonStyle = (rounds: number): any[] => {
+        return [styles.button, selectedRounds == rounds ? styles.selectedButton : {}]
+    };
+    const getButtonTextStyle = (rounds: number): any[] => {
+        return [styles.buttonText, selectedRounds == rounds ? styles.selectedButtonText : {}]
+    };
+
+    const onStartTimer = () => {
+        console.log(selectedRounds);
+        navigation.navigate('Rounds');
+    }
     return (
         <View
             style={{
@@ -41,19 +58,19 @@ const HomeScreen = () => {
                     }}>
                     <Text style={styles.titleText}>Welcome To <Text style={styles.innerText}>Fitness Hoopligans</Text></Text>
                     <Text style={styles.baseText}>How Many Rounds Do You Want To Go Today?</Text>
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>3 Rounds - 15 Minutes</Text>
+                    <TouchableOpacity style={getButtonStyle(3)} onPress={() => updateSelectedRounds(3)}>
+                        <Text style={getButtonTextStyle(3)}>3 Rounds - 15 Minutes</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>4 Rounds - 20 Minutes</Text>
+                    <TouchableOpacity style={getButtonStyle(4)} onPress={() => updateSelectedRounds(4)}>
+                        <Text style={getButtonTextStyle(4)}>4 Rounds - 20 Minutes</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>5 Rounds - 25 Minutes</Text>
+                    <TouchableOpacity style={getButtonStyle(5)} onPress={() => updateSelectedRounds(5)}>
+                        <Text style={getButtonTextStyle(5)}>5 Rounds - 25 Minutes</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>6 Rounds - 30 Minutes</Text>
+                    <TouchableOpacity style={getButtonStyle(6)} onPress={() => updateSelectedRounds(6)}>
+                        <Text style={getButtonTextStyle(6)}>6 Rounds - 30 Minutes</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.startButton}>
+                    <TouchableOpacity style={styles.startButton} onPress={onStartTimer}>
                         <Text style={styles.startButtomText}>Start Timer</Text>
                     </TouchableOpacity>
                 </View>
@@ -127,6 +144,13 @@ const styles = StyleSheet.create({
         borderColor: '#D00D0D',
         flexGrow: 1,
         justifyContent: 'center',
+    },
+    selectedButton: {
+        // TODO: change the color codes
+        backgroundColor: 'red',
+    },
+    selectedButtonText: {
+        color: 'white',
     },
     buttonText: {
         fontFamily: 'Urbanist',
