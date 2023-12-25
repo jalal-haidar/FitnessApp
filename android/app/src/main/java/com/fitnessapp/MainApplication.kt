@@ -11,17 +11,27 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.soloader.SoLoader
+import com.zoontek.rnbootsplash.RNBootSplashPackage; // ⬅️ add the RNBootSplashPackage import
 
 class MainApplication : Application(), ReactApplication {
 
   override val reactNativeHost: ReactNativeHost =
       object : DefaultReactNativeHost(this) {
-        override fun getPackages(): List<ReactPackage> {
+        //override fun getPackages(): List<ReactPackage> {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-          return PackageList(this).packages
-        }
+        //  List<ReactPackage> packages = new PackageList(this).getPackages();
+    
+        //  packages.add(new RNBootSplashPackage());
+        //  return packages;
+        //}
 
+        override fun getPackages(): List<ReactPackage> {
+          val packages: MutableList<ReactPackage> = PackageList(this).packages
+          // ...
+          //packages.add(RNBootSplashPackage())
+          return packages
+        }
         override fun getJSMainModuleName(): String = "index"
 
         override fun getUseDeveloperSupport(): Boolean = BuildConfig.DEBUG
