@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import {
@@ -12,19 +13,12 @@ import {
   NativeEventEmitter,
 } from 'react-native';
 import HomeScreen from './src/screen/HomeScreen';
-import Round1 from './src/screen/Round1';
-import SplashScreen from './src/screen/SplashScreen';
-import Onboard from './src/screen/onboard';
-import Round from './src/screen/Round';
-import Layout from './src/screen/layout/Layout';
-import Layout2 from './src/screen/layout/Layout2';
-import CongratsScreen from './src/screen/CongratsScreen';
-import TimerComponent from './src/screen/Timer';
-import Round3 from './src/screen/Rounds3';
-import AppNavigator from './src/navigation/navigator';
+import Round4Layout from './src/layouts/Round4Layout';
+import Round5Layout from './src/layouts/Round5Layout';
+import Round6Layout from './src/layouts/Round6Layout';
 
 export default function App() {
-  return <React.StrictMode><AppNavigator /></React.StrictMode>;
+  return <HomeScreen />;
 }
 // STYLESHEET
 
