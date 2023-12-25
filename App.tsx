@@ -1,9 +1,19 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
+import React, { useEffect } from 'react';
 import AppNavigator from './src/navigation/navigator';
-
+import BootSplash from "react-native-bootsplash";
 export default function App() {
+  useEffect(() => {
+    const init = async () => {
+      // …do multiple sync or async tasks
+    };
+
+    init().finally(async () => {
+      await BootSplash.hide({ fade: true });
+      console.log("BootSplash has been hidden successfully");
+    });
+  }, []);
   return <React.StrictMode><AppNavigator /></React.StrictMode>;
 }
 // STYLESHEET
