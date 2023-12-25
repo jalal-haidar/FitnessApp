@@ -22,23 +22,19 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
 
     // function to handle the start button press
     const handleStart = () => {
-        console.log('start');
         setIsRunning(true);
 
     };
     // function to handle the pause button press
     const handlePause = () => {
-        console.log('pause');
         setIsRunning(false);
     };
     // function to handle the continue button press
     const handleContinue = () => {
-        console.log('continue');
         setIsRunning(true);
     };
     // function to handle the reset button press
     const handleReset = () => {
-        console.log('reset called')
         setTimer(0);
         setIsRunning(false);
     };
@@ -46,10 +42,8 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
     const runTimer = () => {
         return setInterval(() => {
             setTimer(prevTimer => {
-                console.log(isRunning, timer);
                 if (!isRunning) { return prevTimer; }
                 else if (prevTimer === 0) {
-                    console.log(round, rounds);
                     if (round === rounds) {
                         setIsRunning(false);
                         navigation.navigate("Congrats")

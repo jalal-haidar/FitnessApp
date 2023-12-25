@@ -1,24 +1,10 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-  Button,
-  NativeModules,
-  NativeEventEmitter,
-} from 'react-native';
-import HomeScreen from './src/screen/HomeScreen';
-import Round4Layout from './src/layouts/Round4Layout';
-import Round5Layout from './src/layouts/Round5Layout';
-import Round6Layout from './src/layouts/Round6Layout';
+import AppNavigator from './src/navigation/navigator';
 
 export default function App() {
-  return <HomeScreen />;
+  return <React.StrictMode><AppNavigator /></React.StrictMode>;
 }
 // STYLESHEET
 
