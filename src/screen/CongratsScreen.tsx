@@ -56,6 +56,7 @@ const CongratsScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#FFFFFF',
     },
     header: {
         width: '100%',

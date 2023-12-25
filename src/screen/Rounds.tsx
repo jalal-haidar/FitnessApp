@@ -44,10 +44,23 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
             setTimer(prevTimer => {
                 if (!isRunning) { return prevTimer; }
                 else if (prevTimer === 0) {
-                    if (round === rounds) {
+                    if (round === rounds && rounds !== 3) {
                         setIsRunning(false);
                         navigation.navigate("Congrats")
                         return 0;
+                    }
+                    if (rounds === 3) {
+                        if (round === 3) {
+                            setSession(session + 1);
+                            setRound(1);
+                            setRest(0);
+                        }
+                        if (session === 3 && round === 3) {
+                            setIsRunning(false);
+                            navigation.navigate("Congrats")
+                            return 0;
+                        }
+
                     }
                     if (rest === round) {
                         setRound(round + 1);
@@ -117,39 +130,66 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
     }
     const SessionButtons = () => {
         var jsx = [];
-        for (let i = 0; i < 3; i++) {
-            jsx.push(<TouchableOpacity disabled={true} style={[styles.sessionButton, session === (i + 1) ? styles.currentSession : {}]} key={i}>
-                <Text style={[styles.sessionButtonText, session === (i + 1) ? styles.currentSessionText : {}]}>Session {i + 1}</Text>
-            </TouchableOpacity>);
+        if (rounds === 3) {
+            for (let i = 0; i < 3; i++) {
+                jsx.push(<TouchableOpacity disabled={true} style={[styles.sessionButton, session >= (i + 1) ? styles.currentSession : {}]} key={i}>
+                    <Text style={[styles.sessionButtonText, session >= (i + 1) ? styles.currentSessionText : {}]}>Session {i + 1}</Text>
+                </TouchableOpacity>);
+            }
+            return (
+                <View style={styles.sessionButtonsWrapper}>
+                    {jsx}
+                </View>
+            )
         }
-        return (
-            <View style={styles.sessionButtonsWrapper}>
-                {jsx}
-            </View>
-        )
     }
     const RoundButtons = () => {
         var jsx = [];
-        for (let i = 0; i < rounds; i++) {
-            const isPrevRound = i < (round - 1);
-            const isCurrentRound = i === (round - 1);
-            const isPrevCurrentRound = i <= (round - 1);
-            const isRest = i <= rest - 1;
+        if (rounds === 3) {
+            for (let i = 0; i < rounds; i++) {
+                const isPrevRound = i < (round - 1);
+                const isCurrentRound = i === (round - 1);
+                const isPrevCurrentRound = i <= (round - 1);
+                const isRest = i <= rest - 1;
 
-            jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isPrevCurrentRound ? styles.prevRound : isCurrentRound ? styles.currentRound : {}]} key={i}>
-                <Text style={[styles.roundButtonText, isCurrentRound || isPrevRound ? styles.currentRoundText : {}]}>Round {i + 1}</Text>
-            </TouchableOpacity>);
-            if (i !== rounds - 1) {
-                jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isPrevCurrentRound && isRest ? styles.prevRest : {}]} key={i + 'a'}>
-                    <Text style={[styles.roundButtonText, isPrevCurrentRound && isRest ? styles.currentRoundText : {}]}>Rest</Text>
+                jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isPrevCurrentRound ? styles.prevRound : isCurrentRound ? styles.currentRound : {}]} key={i}>
+                    <Text style={[styles.roundButtonText, isCurrentRound || isPrevRound ? styles.currentRoundText : {}]}>Round {i + 1}</Text>
                 </TouchableOpacity>);
+                if (i !== rounds - 1) {
+                    jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isPrevCurrentRound && isRest ? styles.prevRest : {}]} key={i + 'a'}>
+                        <Text style={[styles.roundButtonText, isPrevCurrentRound && isRest ? styles.currentRoundText : {}]}>Rest</Text>
+                    </TouchableOpacity>);
+                }
             }
+            return (
+                <View style={styles.roundButtonsWrapper}>
+                    {jsx}
+                </View>
+            )
         }
-        return (
-            <View style={styles.roundButtonsWrapper}>
-                {jsx}
-            </View>
-        )
+        else {
+            for (let i = 0; i < rounds; i++) {
+                const isPrevRound = i < (round - 1);
+                const isCurrentRound = i === (round - 1);
+                const isPrevCurrentRound = i <= (round - 1);
+                const isRest = i <= rest - 1;
+
+                jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isPrevCurrentRound ? styles.prevRound : isCurrentRound ? styles.currentRound : {}]} key={i}>
+                    <Text style={[styles.roundButtonText, isCurrentRound || isPrevRound ? styles.currentRoundText : {}]}>Round {i + 1}</Text>
+                </TouchableOpacity>);
+                // if (i !== rounds - 1) {
+                //     jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isPrevCurrentRound && isRest ? styles.prevRest : {}]} key={i + 'a'}>
+                //         <Text style={[styles.roundButtonText, isPrevCurrentRound && isRest ? styles.currentRoundText : {}]}>Rest</Text>
+                //     </TouchableOpacity>);
+                // }
+            }
+            return (
+                <View style={styles.roundButtonsWrapper}>
+                    {jsx}
+                </View>
+            )
+
+        }
     }
     const Body = () => {
         return (
@@ -161,73 +201,142 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
     }
 
     const FooterTimer = () => {
-        return (
-            <View style={styles.footerTimerWraper}>
-                <TouchableOpacity onPress={handleStart}>
-                    <Image
-                        resizeMode="cover"
-                        source={require('../assets/Ellipse.png')}
-                    />
-                </TouchableOpacity>
-            </View>
-        )
-    }
-    const RestView = () => {
         if (round !== rest) {
-            return <></>;
+            return (
+                <View style={styles.footerTimerWraper}>
+                    <TouchableOpacity onPress={handleStart}>
+                        <Image
+                            resizeMode="cover"
+                            source={require('../assets/Ellipse.png')}
+                        />
+                    </TouchableOpacity>
+                </View>
+            )
+        } else {
+            return (
+                <View style={styles.RestfooterTimerWraper}>
+                    <TouchableOpacity onPress={handleStart}>
+                        <Image
+                            resizeMode="cover"
+                            source={require('../assets/Ellipse.png')}
+                        />
+                    </TouchableOpacity>
+                </View>
+            )
+
         }
-        return <View>
-            <Text>congrats</Text>
-        </View>
+
+    }
+    const FooterCongratText = () => {
+        if (round === rest && rounds === 3) {
+            return (
+                <View style={styles.RestfooterCongratsTextWraper}>
+                    <Text style={styles.RestfooterCongratsText}>Round {round} Completed</Text>
+                    <Text style={styles.RestfooterCongratsRedText}>You Did Well ..!</Text>
+                    <Text style={styles.RestfooterCongratsText}>Take Some Rest</Text>
+                </View>
+            )
+        } else if (round === rest && rounds > 3) {
+            return (
+                <View style={styles.RestfooterCongratsTextWraper}>
+                    <Text style={styles.RestfooterCongratsRedText}>You Did Well ..!</Text>
+                    <Text style={styles.RestfooterCongratsText}>Take Some Rest</Text>
+                </View>
+            )
+        }
     }
     const FooterTimerText = () => {
-        return (
-            <View style={styles.footerTimerTextWrapper}>
-                <Text style={styles.timerRoundText}>Session {session} - Round {round}</Text>
-                <Text style={styles.timerDurationText}>1 Minute</Text>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={styles.timeCounter}>00 : </Text>
-                    <Text style={styles.timeCounter}>{timer < 10 ? timer < 0 ? '00' : ('0' + timer) : ''}</Text>
+        if (round !== rest && rounds === 3) {
+            return (
+                <View style={styles.footerTimerTextWrapper}>
+                    <Text style={styles.timerRoundText}>Session {session} - Round {round}</Text>
+                    <Text style={styles.timerDurationText}>1 Minute</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={styles.timeCounter}>00 : </Text>
+                        <Text style={styles.timeCounter}>{timer < 10 ? timer < 0 ? '00' : ('0' + timer) : ''}</Text>
+                    </View>
                 </View>
-            </View>
-        )
+
+            )
+        }
+        if (round !== rest && rounds > 3) {
+            return (
+                <View style={styles.footerTimerTextWrapper}>
+                    <Text style={styles.timerRoundText}>Round {round}</Text>
+                    <Text style={styles.timerDurationText}>5 Minutes</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={styles.timeCounter}>00 : </Text>
+                        <Text style={styles.timeCounter}>{timer < 10 ? timer < 0 ? '00' : ('0' + timer) : ''}</Text>
+                    </View>
+                </View>
+
+            )
+        }
+        else if (round === rest) {
+            return (
+                <View style={styles.RestfooeterTimerTextWrapper}>
+                    <Text style={styles.ResttimerRoundText}>Rest</Text>
+                    <Text style={styles.ResttimerDurationText}>1 Minute</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={styles.ResttimeCounter}>00 : </Text>
+                        <Text style={styles.ResttimeCounter}>{timer < 10 ? timer < 0 ? '00' : ('0' + timer) : ''}</Text>
+                    </View>
+                </View >
+            )
+
+        }
+
     }
     const FooterTimerToggle = () => {
-        return (
-            <View style={styles.footerTimerToggleWrapper}>
+        if (round > rest) {
+            return (
+                <View style={styles.footerTimerToggleWrapper}>
 
-                <Image
-                    style={styles.footerTimerToggle}
-                    resizeMode="cover"
-                    source={require('../assets/timerToggle.png')}
-                />
-                {isRunning ? (
-                    <TouchableOpacity onPress={handlePause}>
-                        <Image
-                            style={styles.footerPLayPauseIcon}
-                            resizeMode="cover"
-                            source={require('../assets/pauseIcon.png')}
-                        />
-                    </TouchableOpacity>
-                ) : (
-                    <TouchableOpacity onPress={handleContinue}>
-                        <Image
-                            style={styles.footerPLayPauseIcon}
-                            resizeMode="cover"
-                            source={require('../assets/playIcon.png')}
-                        />
-                    </TouchableOpacity>
-                )}
-            </View>
-        )
+                    <Image
+                        style={styles.footerTimerToggle}
+                        resizeMode="cover"
+                        source={require('../assets/timerToggle.png')}
+                    />
+                    {isRunning ? (
+                        <TouchableOpacity onPress={handlePause}>
+                            <Image
+                                style={styles.footerPLayPauseIcon}
+                                resizeMode="cover"
+                                source={require('../assets/pauseIcon.png')}
+                            />
+                        </TouchableOpacity>
+                    ) : (
+                        <TouchableOpacity onPress={handleContinue}>
+                            <Image
+                                style={styles.footerPLayPauseIcon}
+                                resizeMode="cover"
+                                source={require('../assets/playIcon.png')}
+                            />
+                        </TouchableOpacity>
+                    )}
+                </View>
+            )
+        }
+
+    }
+    const FooterLowerText = () => {
+        if (round === rest) {
+            return (
+                <View style={styles.RestfooeterLowerTextWrapper}>
+                    <Text style={styles.RestfooterLowerText}>Next Round Will Start In 1 Minute</Text>
+                </View>
+            )
+        }
+
     }
     const Footer = () => {
         return (
             <View style={styles.footer}>
-                <RestView />
+                <FooterCongratText />
                 <FooterTimer />
                 <FooterTimerText />
                 <FooterTimerToggle />
+                <FooterLowerText />
             </View>
         )
     }
@@ -243,10 +352,12 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#FFFFFF',
     },
     header: {
         width: '100%',
         height: '15%',
+        // backgroundColor: '#FFFFFF',
         // backgroundColor: '#C8C8C8',
         alignItems: 'center',
         justifyContent: 'center',
@@ -268,6 +379,7 @@ const styles = StyleSheet.create({
         color: '#000',
         fontWeight: '700',
         fontSize: 20,
+        // fontFamily: 'Urbanist',
         fontFamily: 'Urbanist',
     },
     bodyText: {
@@ -333,8 +445,67 @@ const styles = StyleSheet.create({
         // backgroundColor: 'gold',
         alignItems: 'center',
     },
+    RestfooterCongratsTextWraper: {
+        alignItems: 'center',
+        width: '100%',
+        position: 'absolute',
+        height: '30%',
+        // backgroundColor: 'green',
+        gap: 7,
+        top: 10,
+    },
+    RestfooterCongratsText: {
+        color: '#333333',
+        fontSize: 20,
+        fontWeight: '600',
+        fontFamily: 'Urbanist',
+    },
+    RestfooterCongratsRedText: {
+        color: '#D00D0D',
+        fontSize: 20,
+        fontWeight: '600',
+        fontFamily: 'Urbanist',
+    },
     footerTimerWraper: {
         top: 10,
+    },
+    RestfooterTimerWraper: {
+        position: 'absolute',
+        top: 125,
+        // backgroundColor: 'gold',
+        height: '40%',
+        width: '100%',
+        alignItems: 'center',
+    },
+    RestfooeterTimerTextWrapper: {
+        // transform: [{ translateY: -135 }],
+        textAlign: 'center',
+
+        alignItems: 'center',
+        position: 'absolute',
+        top: 190,
+        // backgroundColor: 'red',
+    },
+    ResttimerRoundText: {
+        color: '#000',
+        fontSize: 16,
+        fontWeight: '600',
+        fontFamily: 'Urbanist',
+        textAlign: 'center',
+    },
+    ResttimerDurationText: {
+        color: '#000',
+        fontSize: 20,
+        fontWeight: '700',
+        fontFamily: 'Urbanist',
+        textAlign: 'center',
+    },
+    ResttimeCounter: {
+        color: '#D00D0D',
+        fontSize: 16,
+        fontWeight: '600',
+        fontFamily: 'Urbanist',
+        textAlign: 'center',
     },
     footerTimerTextWrapper: {
 
@@ -363,6 +534,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         // width: 100
     },
+
     footerTimerToggleWrapper: {
         alignItems: 'center',
         position: 'absolute',
@@ -378,6 +550,22 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         position: 'absolute',
         top: 318,
+
+    },
+    RestfooeterLowerTextWrapper: {
+        alignItems: 'center',
+        position: 'absolute',
+        top: 330,
+        // backgroundColor: 'blue',
+        height: '30%',
+        width: '100%',
+    },
+    RestfooterLowerText: {
+        top: 10,
+        color: '#1A1A1A',
+        fontSize: 20,
+        fontWeight: '600',
+        fontFamily: 'Urbanist',
 
     },
     logo: {

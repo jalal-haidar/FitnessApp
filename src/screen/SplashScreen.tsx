@@ -60,9 +60,10 @@ const styles = StyleSheet.create({
     },
     splashScreen: {
         flex: 1,
-        height: 852,
+        height: '100%',
         overflow: 'hidden',
         width: '100%',
+        backgroundColor: '#FFFFFF',
     },
 });
 

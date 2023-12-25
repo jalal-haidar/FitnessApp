@@ -90,7 +90,7 @@ const Layout2 = () => {
 
     const FooterTimer = () => {
         return (
-            <View style={styles.footerTimerWraper}>
+            <View style={styles.RestfooterTimerWraper}>
                 <Image
                     resizeMode="cover"
                     source={require('../assets/Ellipse.png')}
@@ -100,12 +100,12 @@ const Layout2 = () => {
     }
     const FooterTimerText = () => {
         return (
-            <View style={styles.fooeterTimerTextWrapper}>
-                <Text style={styles.timerRoundText}>Rest</Text>
-                <Text style={styles.timerDurationText}>1 Minute</Text>
+            <View style={styles.RestfooeterTimerTextWrapper}>
+                <Text style={styles.ResttimerRoundText}>Rest</Text>
+                <Text style={styles.ResttimerDurationText}>1 Minute</Text>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={styles.timeCounter}>00 : </Text>
-                    <Text style={styles.timeCounter}>00</Text>
+                    <Text style={styles.ResttimeCounter}>00 : </Text>
+                    <Text style={styles.ResttimeCounter}>00</Text>
                 </View>
             </View>
         )
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
         // backgroundColor: 'gold',
         alignItems: 'center',
     },
-    footerCongratsTextWraper: {
+    RestfooterCongratsTextWraper: {
         alignItems: 'center',
         width: '100%',
         position: 'absolute',
@@ -240,19 +240,19 @@ const styles = StyleSheet.create({
         gap: 7,
         top: 10,
     },
-    footerCongratsText: {
+    RestfooterCongratsText: {
         color: '#333333',
         fontSize: 20,
         fontWeight: '600',
         fontFamily: 'Urbanist',
     },
-    footerCongratsRedText: {
+    RestfooterCongratsRedText: {
         color: '#D00D0D',
         fontSize: 20,
         fontWeight: '600',
         fontFamily: 'Urbanist',
     },
-    footerTimerWraper: {
+    RestfooterTimerWraper: {
         position: 'absolute',
         top: 125,
         // backgroundColor: 'red',
@@ -260,30 +260,30 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
     },
-    fooeterTimerTextWrapper: {
+    RestfooeterTimerTextWrapper: {
         alignItems: 'center',
         position: 'absolute',
         top: 190,
     },
-    timerRoundText: {
+    ResttimerRoundText: {
         color: '#000',
         fontSize: 16,
         fontWeight: '600',
         fontFamily: 'Urbanist',
     },
-    timerDurationText: {
+    ResttimerDurationText: {
         color: '#000',
         fontSize: 20,
         fontWeight: '700',
         fontFamily: 'Urbanist',
     },
-    timeCounter: {
+    ResttimeCounter: {
         color: '#D00D0D',
         fontSize: 16,
         fontWeight: '600',
         fontFamily: 'Urbanist',
     },
-    fooeterLowerTextWrapper: {
+    RestfooeterLowerTextWrapper: {
         alignItems: 'center',
         position: 'absolute',
         top: 330,
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
         height: '30%',
         width: '100%',
     },
-    footerLowerText: {
+    RestfooterLowerText: {
         top: 10,
         color: '#1A1A1A',
         fontSize: 20,

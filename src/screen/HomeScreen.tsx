@@ -89,8 +89,8 @@ const styles = StyleSheet.create({
         // marginBottom: 20,
     },
     lowerContainer: {
-        // backgroundColor: '#FFFFFF',
-        backgroundColor: 'gold',
+        backgroundColor: '#FFFFFF',
+        // backgroundColor: 'gold',
         flex: 1,
         height: '50%',
         // borderTopWidth: 1,
