@@ -12,8 +12,13 @@ interface RoundComponentProps {
 const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
 
     const rounds = route.params?.rounds || 0;
-    const defaultTimerTime = 5;
-    const [timer, setTimer] = useState<number>(defaultTimerTime);
+    // if value of Rounds is 3 then default timer time is 60 else 300(5 minutes).
+    const [timer, setTimer] = useState<number>(rounds === 3 ? 60 : 300);
+    //value of default timer time is assigned to on above condition.
+    const defaultTimerTime = timer;
+    //default rest time is 60 seconds whether rounds are 3,4,5 or 6.
+    const defaultRestTime = 60;
+
     const [isRunning, setIsRunning] = useState<boolean>(true);
     const [rest, setRest] = useState<number>(0);
     const [round, setRound] = useState<number>(1);
@@ -39,6 +44,63 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
         setIsRunning(false);
     };
 
+    //i messed up with the logic of timer so i commented it out, another copy runTimer func( which is written by you) is below the comment.
+
+    // const runTimer = () => {
+    //     return setInterval(() => {
+    //         if (rest === round && rounds != 3) {
+
+    //         }
+
+    //         setTimer(prevTimer => {
+
+    //             if (!isRunning) {
+
+    //                 return defaultTimerTime;
+    //             }
+
+    //             else if (prevTimer === 0) {
+
+    //                 if (round === rounds && rounds !== 3) {
+    //                     setIsRunning(false);
+    //                     setTimeout(() => {
+    //                         navigation.navigate("Congrats")
+    //                     }, 200);
+    //                     return 0;
+    //                 }
+    //                 if (rounds === 3) {
+    //                     if (round === 3) {
+    //                         setSession(session + 1);
+    //                         setRound(() => 1);
+    //                         setRest(0);
+    //                         if (session === 3) {
+    //                             setIsRunning(false);
+    //                             setTimeout(() => {
+    //                                 navigation.navigate("Congrats")
+    //                             }, 200);
+    //                         }
+    //                         return defaultTimerTime;
+    //                     }
+    //                 }
+
+    //                 if (rest === round) {
+    //                     for (let i = 0; i < defaultRestTime - 1; i++) {
+    //                         if (rest === round && i < defaultRestTime - 1) { return defaultRestTime; }
+    //                         else { setRound(round + 1); }
+    //                         defaultTimerTime = 60;
+    //                         return defaultTimerTime;
+    //                     }
+    //                     return defaultTimerTime;
+    //                 }
+    //                 else {
+    //                     setRest(round);
+    //                 }
+    //                 return defaultTimerTime;
+    //             }
+
+    //             return prevTimer - 1
+    //         });
+    //     }, 1000)
     const runTimer = () => {
         return setInterval(() => {
             setTimer(prevTimer => {
@@ -83,6 +145,8 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
         }, 1000)
 
     }
+
+
     useEffect(() => {
         let interval: any = null;
 
@@ -93,7 +157,7 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
 
         // Clear the interval when the component unmounts
         return () => { clearInterval(interval) };
-    }, [isRunning, rest, round]);
+    }, [isRunning, rest, round, session]);
 
 
     const Header = () => {
@@ -127,7 +191,10 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
         var jsx = [];
         if (rounds === 3) {
             for (let i = 0; i < 3; i++) {
-                jsx.push(<TouchableOpacity disabled={true} style={[styles.sessionButton, session >= (i + 1) ? styles.currentSession : {}]} key={i}>
+                const isCurrent = session === (i + 1);
+                const isPrevious = session > (i + 1);
+                const bgColor = isCurrent ? "red" : "green";
+                jsx.push(<TouchableOpacity disabled={true} style={[styles.sessionButton, isCurrent || isPrevious ? { backgroundColor: bgColor } : {}]} key={i}>
                     <Text style={[styles.sessionButtonText, session >= (i + 1) ? styles.currentSessionText : {}]}>Session {i + 1}</Text>
                 </TouchableOpacity>);
             }
@@ -140,20 +207,44 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
     }
     const RoundButtons = () => {
         var jsx = [];
-        for (let i = 0; i < rounds; i++) {
-            const isPrevRound = i < (round - 1);
-            const isCurrentRound = i === (round - 1);
-            const isPrevCurrentRound = i <= (round - 1);
-            const isRest = i <= rest - 1;
-            const bgColor = rounds === 3 ? "purple" : "red";
-            jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isCurrentRound ? { backgroundColor: bgColor } : isPrevCurrentRound ? styles.prevRound : {}]} key={i}>
-                <Text style={[styles.roundButtonText, isCurrentRound || isPrevRound ? styles.currentRoundText : {}]}>Round {i + 1}</Text>
-            </TouchableOpacity>);
-            if (rounds === 3 && i !== rounds - 1) {
-                jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isPrevCurrentRound && isRest ? styles.prevRest : {}]} key={i + 'a'}>
-                    <Text style={[styles.roundButtonText, isPrevCurrentRound && isRest ? styles.currentRoundText : {}]}>Rest</Text>
+        if (rounds === 3) {
+            for (let i = 0; i < rounds; i++) {
+                const isPrevRound = i < (round - 1);
+                const isCurrentRound = i === (round - 1);
+                const isPrevCurrentRound = i <= (round - 1);
+                const isRest = i <= rest - 1;
+                const isrestt = rest == round;
+                const bgColor = rounds === 3 ? "#333333" : "red";
+                // (i === round) will decide which round border should the style be applied to
+                // const border = /*rounds !== 3 && isRest*/ isrestt && (i === round) ? { borderWidth: 2, borderColor: '#D00D0D' } : {}
+                jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isCurrentRound && !isRest ? { backgroundColor: bgColor } : isPrevCurrentRound ? styles.prevRound3 : {}]} key={i}>
+                    <Text style={[styles.roundButtonText, isCurrentRound || isPrevRound ? styles.currentRoundText : {}]}>Round {i + 1}</Text>
                 </TouchableOpacity>);
+                if (rounds === 3 && i !== rounds - 1) {
+                    jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isCurrentRound && isRest ? styles.prevRest : isPrevCurrentRound && isRest ? { backgroundColor: 'blue' } : {}]} key={i + 'a'}>
+                        <Text style={[styles.roundButtonText, isPrevCurrentRound && isRest ? styles.currentRoundText : {}]}>Rest</Text>
+                    </TouchableOpacity>);
+                }
             }
+        } else {
+            for (let i = 0; i < rounds; i++) {
+                const isPrevRound = i < (round - 1);
+                const isCurrentRound = i === (round - 1);
+                const isPrevCurrentRound = i <= (round - 1);
+                const isRest = i <= rest - 1;
+                const isrestt = rest == round;
+                const bgColor = rounds === 3 ? "blue" : "#D00D0D";
+                const border = /*rounds !== 3 && isRest*/ isrestt && (i === round) ? { borderWidth: 2, borderColor: '#D00D0D' } : {}
+                jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, border, isCurrentRound && !isRest ? { backgroundColor: bgColor } : isPrevCurrentRound ? styles.prevRound : {}]} key={i}>
+                    <Text style={[styles.roundButtonText, isCurrentRound || isPrevRound ? styles.currentRoundText : {}]}>Round {i + 1}</Text>
+                </TouchableOpacity>);
+                if (rounds === 3 && i !== rounds - 1) {
+                    jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isCurrentRound && isRest ? styles.prevRest : isPrevCurrentRound && isRest ? { backgroundColor: 'blue' } : {}]} key={i + 'a'}>
+                        <Text style={[styles.roundButtonText, isPrevCurrentRound && isRest ? styles.currentRoundText : {}]}>Rest</Text>
+                    </TouchableOpacity>);
+                }
+            }
+
         }
         return (
             <View style={styles.roundButtonsWrapper}>
@@ -215,6 +306,12 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
             )
         }
     }
+    // calculate the time values for display
+    const formatTime = (time: any) => {
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+        return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    };
     const FooterTimerText = () => {
         if (round !== rest && rounds === 3) {
             return (
@@ -222,8 +319,10 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
                     <Text style={styles.timerRoundText}>Session {session} - Round {round}</Text>
                     <Text style={styles.timerDurationText}>1 Minute</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={styles.timeCounter}>00 : </Text>
-                        <Text style={styles.timeCounter}>{timer < 10 ? timer < 0 ? '00' : ('0' + timer) : ''}</Text>
+                        <Text style={styles.timeCounter}>{formatTime(timer)}</Text>
+
+                        {/* <Text style={styles.timeCounter}>00 : </Text> */}
+                        {/* <Text style={styles.timeCounter}>{timer < 10 ? timer < 0 ? '00' : ('0' + timer) : ''}</Text> */}
                     </View>
                 </View>
 
@@ -235,8 +334,10 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
                     <Text style={styles.timerRoundText}>Round {round}</Text>
                     <Text style={styles.timerDurationText}>5 Minutes</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={styles.timeCounter}>00 : </Text>
-                        <Text style={styles.timeCounter}>{timer < 10 ? timer < 0 ? '00' : ('0' + timer) : ''}</Text>
+                        <Text style={styles.timeCounter}>{formatTime(timer)}</Text>
+
+                        {/* <Text style={styles.timeCounter}>00 : </Text> */}
+                        {/* <Text style={styles.timeCounter}>{timer < 10 ? timer < 0 ? '00' : ('0' + timer) : ''}</Text> */}
                     </View>
                 </View>
 
@@ -248,8 +349,10 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
                     <Text style={styles.ResttimerRoundText}>Rest</Text>
                     <Text style={styles.ResttimerDurationText}>1 Minute</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={styles.ResttimeCounter}>00 : </Text>
-                        <Text style={styles.ResttimeCounter}>{timer < 10 ? timer < 0 ? '00' : ('0' + timer) : ''}</Text>
+                        <Text style={styles.ResttimeCounter}>{formatTime(timer)}</Text>
+
+                        {/* <Text style={styles.ResttimeCounter}>00 : </Text>
+                        <Text style={styles.ResttimeCounter}>{timer < 10 ? timer < 0 ? '00' : ('0' + timer) : ''}</Text> */}
                     </View>
                 </View >
             )
@@ -555,11 +658,14 @@ const styles = StyleSheet.create({
     currentRoundText: {
         color: 'white',
     },
+    prevRound3: {
+        backgroundColor: '#219653',
+    },
     prevRound: {
-        backgroundColor: 'green',
+        backgroundColor: '#2EAF19',
     },
     prevRest: {
-        backgroundColor: 'grey'
+        backgroundColor: '#333333'
     }
 });
 export default Rounds;
