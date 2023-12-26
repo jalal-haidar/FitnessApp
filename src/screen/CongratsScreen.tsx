@@ -1,19 +1,22 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Image, } from 'react-native';
 import FastImage from 'react-native-fast-image';
-const CongratsScreen = () => {
-    const Header = () => {
-        return (
-            <View style={styles.header}>
-                <Image
-                    resizeMode='contain'
-                    style={styles.logo}
-                    source={require('../assets/FH-Red-Black.png')}
-                />
-            </View>
-        )
-    }
+interface CongratsScreenProps {
+    navigation: any; // You can use a more specific type if needed
+}
+const CongratsScreen: React.FC<CongratsScreenProps> = ({ navigation }) => {
+    const Header = () => (
+        <View style={styles.header}>
+            <Image
+                resizeMode='contain'
+                style={styles.logo}
+                source={require('../assets/FH-Red-Black.png')}
+            />
+        </View>
+    );
+
     const CongratsGif = () => {
         return (
             <View style={styles.gifWrapper}>
@@ -25,8 +28,8 @@ const CongratsScreen = () => {
 
                 />
             </View>
-        )
-    }
+        );
+    };
     const CongratsText = () => {
         return (
             <View style={styles.congratsTextWrapper}>
@@ -34,16 +37,16 @@ const CongratsScreen = () => {
                 <Text style={styles.congratsTextMiddle}>Your Exercise Is Completed</Text>
                 <Text style={styles.congratsTextLower}>You Did An Awesome Job</Text>
             </View>
-        )
-    }
+        );
+    };
     const Body = () => {
         return (
             <View style={styles.body}>
                 <CongratsGif />
                 <CongratsText />
             </View>
-        )
-    }
+        );
+    };
 
     return (
         <SafeAreaView style={styles.container}>

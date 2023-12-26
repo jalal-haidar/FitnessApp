@@ -46,7 +46,9 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
                 else if (prevTimer === 0) {
                     if (round === rounds && rounds !== 3) {
                         setIsRunning(false);
-                        navigation.navigate("Congrats")
+                        setTimeout(() => {
+                            navigation.navigate("Congrats")
+                        }, 200);
                         return 0;
                     }
                     if (rounds === 3) {
@@ -57,7 +59,9 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
                         }
                         if (session === 3 && round === 3) {
                             setIsRunning(false);
-                            navigation.navigate("Congrats")
+                            setTimeout(() => {
+                                navigation.navigate("Congrats")
+                            }, 200);
                             return 0;
                         }
 
@@ -90,15 +94,6 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
         // Clear the interval when the component unmounts
         return () => { clearInterval(interval) };
     }, [isRunning, rest, round]);
-
-
-
-
-
-
-
-
-
 
 
     const Header = () => {
@@ -145,51 +140,26 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
     }
     const RoundButtons = () => {
         var jsx = [];
-        if (rounds === 3) {
-            for (let i = 0; i < rounds; i++) {
-                const isPrevRound = i < (round - 1);
-                const isCurrentRound = i === (round - 1);
-                const isPrevCurrentRound = i <= (round - 1);
-                const isRest = i <= rest - 1;
-
-                jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isPrevCurrentRound ? styles.prevRound : isCurrentRound ? styles.currentRound : {}]} key={i}>
-                    <Text style={[styles.roundButtonText, isCurrentRound || isPrevRound ? styles.currentRoundText : {}]}>Round {i + 1}</Text>
+        for (let i = 0; i < rounds; i++) {
+            const isPrevRound = i < (round - 1);
+            const isCurrentRound = i === (round - 1);
+            const isPrevCurrentRound = i <= (round - 1);
+            const isRest = i <= rest - 1;
+            const bgColor = rounds === 3 ? "purple" : "red";
+            jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isCurrentRound ? { backgroundColor: bgColor } : isPrevCurrentRound ? styles.prevRound : {}]} key={i}>
+                <Text style={[styles.roundButtonText, isCurrentRound || isPrevRound ? styles.currentRoundText : {}]}>Round {i + 1}</Text>
+            </TouchableOpacity>);
+            if (rounds === 3 && i !== rounds - 1) {
+                jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isPrevCurrentRound && isRest ? styles.prevRest : {}]} key={i + 'a'}>
+                    <Text style={[styles.roundButtonText, isPrevCurrentRound && isRest ? styles.currentRoundText : {}]}>Rest</Text>
                 </TouchableOpacity>);
-                if (i !== rounds - 1) {
-                    jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isPrevCurrentRound && isRest ? styles.prevRest : {}]} key={i + 'a'}>
-                        <Text style={[styles.roundButtonText, isPrevCurrentRound && isRest ? styles.currentRoundText : {}]}>Rest</Text>
-                    </TouchableOpacity>);
-                }
             }
-            return (
-                <View style={styles.roundButtonsWrapper}>
-                    {jsx}
-                </View>
-            )
         }
-        else {
-            for (let i = 0; i < rounds; i++) {
-                const isPrevRound = i < (round - 1);
-                const isCurrentRound = i === (round - 1);
-                const isPrevCurrentRound = i <= (round - 1);
-                const isRest = i <= rest - 1;
-
-                jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isPrevCurrentRound ? styles.prevRound : isCurrentRound ? styles.currentRound : {}]} key={i}>
-                    <Text style={[styles.roundButtonText, isCurrentRound || isPrevRound ? styles.currentRoundText : {}]}>Round {i + 1}</Text>
-                </TouchableOpacity>);
-                // if (i !== rounds - 1) {
-                //     jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isPrevCurrentRound && isRest ? styles.prevRest : {}]} key={i + 'a'}>
-                //         <Text style={[styles.roundButtonText, isPrevCurrentRound && isRest ? styles.currentRoundText : {}]}>Rest</Text>
-                //     </TouchableOpacity>);
-                // }
-            }
-            return (
-                <View style={styles.roundButtonsWrapper}>
-                    {jsx}
-                </View>
-            )
-
-        }
+        return (
+            <View style={styles.roundButtonsWrapper}>
+                {jsx}
+            </View>
+        )
     }
     const Body = () => {
         return (
