@@ -13,11 +13,19 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
 
     const rounds = route.params?.rounds || 0;
     // if value of Rounds is 3 then default timer time is 60 else 300(5 minutes).
-    const [timer, setTimer] = useState<number>(rounds === 3 ? 60 : 300);
+    const [timer, setTimer] = useState<number>(rounds === 3 ? 60 : 10);
     //value of default timer time is assigned to on above condition.
     const defaultTimerTime = timer;
     //default rest time is 60 seconds whether rounds are 3,4,5 or 6.
-    const defaultRestTime = 60;
+    const defaultRestTime = 20;
+    // Calculate the total number of iterations(Rounds + Rests), if rounds is 5 then totalIteration is 5+(5-1)
+    const totalIteration = rounds + (rounds - 1);
+    // Determine if totalIteration is even
+    const isEven = totalIteration % 2 === 0;
+    // Use the state to manage the isEven state
+    const [isEvenState, setIsEven] = useState<boolean>(isEven);
+
+
 
     const [isRunning, setIsRunning] = useState<boolean>(true);
     const [rest, setRest] = useState<number>(0);
@@ -44,64 +52,9 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
         setIsRunning(false);
     };
 
-    //i messed up with the logic of timer so i commented it out, another copy runTimer func( which is written by you) is below the comment.
-
-    // const runTimer = () => {
-    //     return setInterval(() => {
-    //         if (rest === round && rounds != 3) {
-
-    //         }
-
-    //         setTimer(prevTimer => {
-
-    //             if (!isRunning) {
-
-    //                 return defaultTimerTime;
-    //             }
-
-    //             else if (prevTimer === 0) {
-
-    //                 if (round === rounds && rounds !== 3) {
-    //                     setIsRunning(false);
-    //                     setTimeout(() => {
-    //                         navigation.navigate("Congrats")
-    //                     }, 200);
-    //                     return 0;
-    //                 }
-    //                 if (rounds === 3) {
-    //                     if (round === 3) {
-    //                         setSession(session + 1);
-    //                         setRound(() => 1);
-    //                         setRest(0);
-    //                         if (session === 3) {
-    //                             setIsRunning(false);
-    //                             setTimeout(() => {
-    //                                 navigation.navigate("Congrats")
-    //                             }, 200);
-    //                         }
-    //                         return defaultTimerTime;
-    //                     }
-    //                 }
-
-    //                 if (rest === round) {
-    //                     for (let i = 0; i < defaultRestTime - 1; i++) {
-    //                         if (rest === round && i < defaultRestTime - 1) { return defaultRestTime; }
-    //                         else { setRound(round + 1); }
-    //                         defaultTimerTime = 60;
-    //                         return defaultTimerTime;
-    //                     }
-    //                     return defaultTimerTime;
-    //                 }
-    //                 else {
-    //                     setRest(round);
-    //                 }
-    //                 return defaultTimerTime;
-    //             }
-
-    //             return prevTimer - 1
-    //         });
-    //     }, 1000)
+    //if isEventState is true then runRestTimer func will run else runTimer func will run.
     const runTimer = () => {
+        console.log('For Round: round', round, 'rest', rest, 'isEvenState', isEvenState)
         return setInterval(() => {
             setTimer(prevTimer => {
                 if (!isRunning) { return prevTimer; }
@@ -130,10 +83,16 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
                     }
                     if (rest === round) {
                         setRound(round + 1);
+                        setIsEven(true);
                     }
                     else {
                         setRest(round);
+                        setIsEven(true);
                     }
+
+                    //Change the value of isEvenState to true
+                    // setIsEven(true);
+
                     // Timer reached 0, clear the interval and reset
                     // setRest(round);
                     // console.log(rest, round)
@@ -145,19 +104,75 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
         }, 1000)
 
     }
+    const runRestTimer = () => {
+        console.log('For Rest: round', round, 'rest', rest, 'isEvenState', isEvenState)
+
+        return setInterval(() => {
+            setTimer(prevTimer => {
+                if (!isRunning) {
+                    console.log('Rest is not Running')
+                    return prevTimer;
+                }
+                else if (prevTimer === 0) {
+                    // if (round === rounds && rounds !== 3) {
+                    //     setIsRunning(false);
+                    //     setTimeout(() => {
+                    //         navigation.navigate("Congrats")
+                    //     }, 200);
+                    //     return 0;
+                    // }
+                    // if (rounds === 3) {
+                    //     if (round === 3) {
+                    //         setSession(session + 1);
+                    //         setRound(1);
+                    //         setRest(0);
+                    //     }
+                    //     if (session === 3 && round === 3) {
+                    //         setIsRunning(false);
+                    //         setTimeout(() => {
+                    //             navigation.navigate("Congrats")
+                    //         }, 200);
+                    //         return 0;
+                    //     }
+
+                    // }
+                    if (rest === round) {
+                        setRound(round + 1);
+                    }
+                    else {
+                        setRest(round);
+                    }
+                    setIsEven(false);
+                    // Timer reached 0, clear the interval and reset
+                    // setRest(round);
+                    // console.log(rest, round)
+                    // handleReset(); // Call your resetTimer function here
+                    return defaultRestTime;
+                }
+                return prevTimer - 1
+            });
+        }, 1000)
+
+    }
 
 
     useEffect(() => {
         let interval: any = null;
 
-        if (isRunning) {
+        //if isEventState is true then runRestTimer func will run else runTimer func will run.
+        if (isRunning && !isEvenState) {
             interval = runTimer();
+
+
+        }
+        if (isRunning && isEvenState) {
+            interval = runRestTimer();
 
         }
 
         // Clear the interval when the component unmounts
         return () => { clearInterval(interval) };
-    }, [isRunning, rest, round, session]);
+    }, [isRunning, rest, round, session, isEvenState]);
 
 
     const Header = () => {
