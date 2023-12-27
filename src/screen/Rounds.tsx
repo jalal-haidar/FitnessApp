@@ -54,9 +54,11 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
 
     //if isEventState is true then runRestTimer func will run else runTimer func will run.
     const runTimer = () => {
-        console.log('For Round: round', round, 'rest', rest, 'isEvenState', isEvenState)
         return setInterval(() => {
+            // console.log('For Round: round', round, 'rest', rest, 'isEvenState', isEvenState, 'prevTimer', timer)
+
             setTimer(prevTimer => {
+                console.log('For Round: round', round, 'rest', rest, 'isEvenState', isEvenState, 'Timer', timer, 'prevTimer', prevTimer)
                 if (!isRunning) { return prevTimer; }
                 else if (prevTimer === 0) {
                     if (round === rounds && rounds !== 3) {
@@ -83,15 +85,13 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
                     }
                     if (rest === round) {
                         setRound(round + 1);
-                        setIsEven(true);
                     }
                     else {
                         setRest(round);
-                        setIsEven(true);
                     }
 
                     //Change the value of isEvenState to true
-                    // setIsEven(true);
+                    setIsEven(true);
 
                     // Timer reached 0, clear the interval and reset
                     // setRest(round);
@@ -105,14 +105,13 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
 
     }
     const runRestTimer = () => {
-        console.log('For Rest: round', round, 'rest', rest, 'isEvenState', isEvenState)
+
 
         return setInterval(() => {
+
             setTimer(prevTimer => {
-                if (!isRunning) {
-                    console.log('Rest is not Running')
-                    return prevTimer;
-                }
+                console.log('For Rest: round', round, 'rest', rest, 'isEvenState', isEvenState, 'Timer', timer, 'prevTimer', prevTimer)
+                if (!isRunning) { return prevTimer; }
                 else if (prevTimer === 0) {
                     // if (round === rounds && rounds !== 3) {
                     //     setIsRunning(false);
@@ -160,13 +159,14 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
         let interval: any = null;
 
         //if isEventState is true then runRestTimer func will run else runTimer func will run.
-        if (isRunning && !isEvenState) {
+        if (isRunning && !isEvenState && round !== rest) {
             interval = runTimer();
 
 
         }
-        if (isRunning && isEvenState) {
+        if (isRunning && isEvenState && round === rest) {
             interval = runRestTimer();
+
 
         }
 
