@@ -33,13 +33,19 @@ const RoundsScreen: React.FC<RoundComponentProps> = ({ navigation, route }) => {
     );
 };
 const Rounds: React.FC<RoundComponentProps> = ({ navigation, rounds }) => {
+    // if value of Rounds is 3 then default timer time is 60 else 300(5 minutes).
+    // const [timer, setTimer] = useState<number>(rounds === 3 ? 60 : 300);
+    // //value of default timer time is assigned to on above condition.
+    // const defaultTimerTime = timer;
+    // //default rest time is 60 seconds whether rounds are 3,4,5 or 6.
+    // const defaultRestTime = 20;
 
-    const defaultTimerTime = 2;
-    const defaultBreakTime = 1;
+    const defaultTimerTime = rounds === 3 ? 60 : 300;
+    const defaultBreakTime = 3;
     const [timer, setTimer] = useState<number>(defaultTimerTime);
     const [isRunning, setIsRunning] = useState<boolean>(true);
-    const [rest, setRest] = useState<number>(2);
-    const [round, setRound] = useState<number>(3);
+    const [rest, setRest] = useState<number>(0);
+    const [round, setRound] = useState<number>(1);
     const [session, setSession] = useState<number>(1);
 
     // function to handle the start button press
@@ -261,6 +267,13 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, rounds }) => {
             )
         }
     }
+    // calculate the time values for display
+    const formatTime = (time: any) => {
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+        return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    };
+
     const FooterTimerText = () => {
         if (round !== rest && rounds === 3) {
             return (
@@ -268,8 +281,7 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, rounds }) => {
                     <Text style={styles.timerRoundText}>Session {session} - Round {round}</Text>
                     <Text style={styles.timerDurationText}>1 Minute</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={styles.timeCounter}>00 : </Text>
-                        <Text style={styles.timeCounter}>{timer < 10 ? timer < 0 ? '00' : ('0' + timer) : ''}</Text>
+                        <Text style={styles.timeCounter}>{formatTime(timer)}</Text>
                     </View>
                 </View>
 
@@ -281,8 +293,7 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, rounds }) => {
                     <Text style={styles.timerRoundText}>Round {round}</Text>
                     <Text style={styles.timerDurationText}>5 Minutes</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={styles.timeCounter}>00 : </Text>
-                        <Text style={styles.timeCounter}>{timer < 10 ? timer < 0 ? '00' : ('0' + timer) : ''}</Text>
+                        <Text style={styles.timeCounter}>{formatTime(timer)}</Text>
                     </View>
                 </View>
 
@@ -294,8 +305,7 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, rounds }) => {
                     <Text style={styles.ResttimerRoundText}>Rest</Text>
                     <Text style={styles.ResttimerDurationText}>1 Minute</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={styles.ResttimeCounter}>00 : </Text>
-                        <Text style={styles.ResttimeCounter}>{timer < 10 ? timer < 0 ? '00' : ('0' + timer) : ''}</Text>
+                        <Text style={styles.timeCounter}>{formatTime(timer)}</Text>
                     </View>
                 </View >
             )
