@@ -13,6 +13,7 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
 
     const rounds = route.params?.rounds || 0;
     const defaultTimerTime = 5;
+    const defaultBreakTime = 3;
     const [timer, setTimer] = useState<number>(defaultTimerTime);
     const [isRunning, setIsRunning] = useState<boolean>(true);
     const [rest, setRest] = useState<number>(0);
@@ -71,6 +72,7 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
                     }
                     else {
                         setRest(round);
+                        return defaultBreakTime;
                     }
                     // Timer reached 0, clear the interval and reset
                     // setRest(round);
@@ -127,7 +129,10 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
         var jsx = [];
         if (rounds === 3) {
             for (let i = 0; i < 3; i++) {
-                jsx.push(<TouchableOpacity disabled={true} style={[styles.sessionButton, session >= (i + 1) ? styles.currentSession : {}]} key={i}>
+                const isCurrent = session === (i + 1);
+                const isPrevious = session > (i + 1);
+                const bgColor = isCurrent ? "red" : "green";
+                jsx.push(<TouchableOpacity disabled={true} style={[styles.sessionButton, isCurrent || isPrevious ? { backgroundColor: bgColor } : {}]} key={i}>
                     <Text style={[styles.sessionButtonText, session >= (i + 1) ? styles.currentSessionText : {}]}>Session {i + 1}</Text>
                 </TouchableOpacity>);
             }
@@ -145,12 +150,27 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
             const isCurrentRound = i === (round - 1);
             const isPrevCurrentRound = i <= (round - 1);
             const isRest = i <= rest - 1;
-            const bgColor = rounds === 3 ? "purple" : "red";
-            jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isCurrentRound ? { backgroundColor: bgColor } : isPrevCurrentRound ? styles.prevRound : {}]} key={i}>
+            const isrestt = rest === round;
+            let bgColor = '#F4F4F4';
+            if (rounds === 3) {
+                console.log(rest, round, isCurrentRound, isRest, isPrevRound);
+                if (isCurrentRound && isRest) bgColor = 'green'
+                else if (isCurrentRound) bgColor = 'black';
+                else if (isPrevRound) bgColor = 'green';
+            }
+            //            const bgColor = rounds === 3 ? isCurrentRound ? 'black' : isPrevRound ? "green" : "red" : "#F4F4F4";
+            // (i === round) will decide which round border should the style be applied to
+            // const border = /*rounds !== 3 && isRest*/ isrestt && (i === round) ? { borderWidth: 2, borderColor: '#D00D0D' } : {}
+            jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, { backgroundColor: bgColor }]} key={i}>
                 <Text style={[styles.roundButtonText, isCurrentRound || isPrevRound ? styles.currentRoundText : {}]}>Round {i + 1}</Text>
             </TouchableOpacity>);
+            // if (rounds === 3 && i !== rounds - 1) {
+            //     jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isPrevCurrentRound && isRest ? styles.prevRest : {}]} key={i + 'a'}>
+            //         <Text style={[styles.roundButtonText, isPrevCurrentRound && isRest ? styles.currentRoundText : {}]}>Rest</Text>
+            //     </TouchableOpacity>);
+            // }
             if (rounds === 3 && i !== rounds - 1) {
-                jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isPrevCurrentRound && isRest ? styles.prevRest : {}]} key={i + 'a'}>
+                jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isCurrentRound && isRest ? styles.prevRest : isPrevCurrentRound && isRest ? { backgroundColor: 'blue' } : {}]} key={i + 'a'}>
                     <Text style={[styles.roundButtonText, isPrevCurrentRound && isRest ? styles.currentRoundText : {}]}>Rest</Text>
                 </TouchableOpacity>);
             }
