@@ -6,12 +6,34 @@ import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity } from 'r
 
 interface RoundComponentProps {
     navigation: any,
-    route: any
+    route: any,
+    rounds: any
 }
 
-const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
+const RoundsScreen: React.FC<RoundComponentProps> = ({ navigation, route }) => {
 
     const rounds = route.params?.rounds || 0;
+
+    const Header = () => {
+        return (
+            <View style={styles.header}>
+                <Image
+                    resizeMode='contain'
+                    style={styles.logo}
+                    source={require('../assets/FH-Red-Black.png')}
+                />
+            </View>
+        )
+    }
+    return (
+        <SafeAreaView style={styles.container}>
+            <Header />
+            <Rounds navigation={navigation} route={route} rounds={rounds}></Rounds>
+        </SafeAreaView>
+    );
+};
+const Rounds: React.FC<RoundComponentProps> = ({ navigation, rounds }) => {
+
     const defaultTimerTime = 5;
     const defaultBreakTime = 3;
     const [timer, setTimer] = useState<number>(defaultTimerTime);
@@ -51,6 +73,7 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
                             setSession(session + 1);
                             setRound(1);
                             setRest(0);
+                            return defaultTimerTime;
                         }
                         if (session === 3 && round === 3) {
                             setIsRunning(false);
@@ -59,8 +82,16 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
                             }, 200);
                             return 0;
                         }
+                        if (rest === round) {
+                            setRound(round + 1);
+                        }
+                        else {
+                            setRest(round);
+                            return defaultBreakTime;
+                        }
                         return defaultTimerTime;
                     }
+                    console.log(rest, round);
                     if (rest === round) {
                         setRound(round + 1);
                     }
@@ -92,17 +123,6 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
     }, [isRunning, rest, round]);
 
 
-    const Header = () => {
-        return (
-            <View style={styles.header}>
-                <Image
-                    resizeMode='contain'
-                    style={styles.logo}
-                    source={require('../assets/FH-Red-Black.png')}
-                />
-            </View>
-        )
-    }
     const BodyText = () => {
         return (
             <View style={styles.bodyTextWrapper}>
@@ -328,13 +348,14 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
         )
     }
     return (
-        <SafeAreaView style={styles.container}>
-            <Header />
+        <>
             <Body />
             <Footer />
-        </SafeAreaView>
+        </>
     );
 };
+
+
 
 const styles = StyleSheet.create({
     container: {
@@ -579,4 +600,4 @@ const styles = StyleSheet.create({
         backgroundColor: 'grey'
     }
 });
-export default Rounds;
+export default RoundsScreen;
