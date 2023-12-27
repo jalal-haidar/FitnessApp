@@ -155,16 +155,16 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
             let bgColor = '#F4F4F4';
             let borderColor = "#F4F4F4"
             if (rounds === 3) {
-                if (isCurrentRound && isRest) bgColor = 'green'
-                else if (isCurrentRound) bgColor = 'black';
-                else if (isPrevRound) bgColor = 'green';
+                if (isCurrentRound && isRest) bgColor = '#219653'
+                else if (isCurrentRound) bgColor = '#333333';
+                else if (isPrevRound) bgColor = '#219653';
             }
             else {
-                if (isCurrentRound && isRest) bgColor = 'green'
-                else if (isCurrentRound) bgColor = 'red';
-                else if (isPrevRound) bgColor = 'green';
+                if (isCurrentRound && isRest) bgColor = '#2EAF19'
+                else if (isCurrentRound) bgColor = '#D00D0D';
+                else if (isPrevRound) bgColor = '#2EAF19';
             }
-            if (rounds !== 3 && i === round && round === rest) { borderColor = 'black'; }
+            if (rounds !== 3 && i === round && round === rest) { borderColor = '#D00D0D'; }
             else { borderColor = bgColor; }
             jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, { backgroundColor: bgColor, borderWidth: 2, borderColor: borderColor }]} key={i}>
                 <Text style={[styles.roundButtonText, isCurrentRound || isPrevRound ? styles.currentRoundText : {}]}>Round {i + 1}</Text>
