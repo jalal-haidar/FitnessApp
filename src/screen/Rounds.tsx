@@ -34,8 +34,8 @@ const RoundsScreen: React.FC<RoundComponentProps> = ({ navigation, route }) => {
 };
 const Rounds: React.FC<RoundComponentProps> = ({ navigation, rounds }) => {
 
-    const defaultTimerTime = 5;
-    const defaultBreakTime = 3;
+    const defaultTimerTime = 2;
+    const defaultBreakTime = 1;
     const [timer, setTimer] = useState<number>(defaultTimerTime);
     const [isRunning, setIsRunning] = useState<boolean>(true);
     const [rest, setRest] = useState<number>(2);
@@ -69,7 +69,15 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, rounds }) => {
                         return 0;
                     }
                     if (rounds === 3) {
+
                         if (round === 3) {
+                            if (session === 3) {
+                                setIsRunning(false);
+                                setTimeout(() => {
+                                    navigation.navigate("Congrats")
+                                }, 200);
+                                return 0;
+                            }
                             setSession(session + 1);
                             setRound(1);
                             setRest(0);
@@ -145,7 +153,7 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, rounds }) => {
             for (let i = 0; i < 3; i++) {
                 const isCurrent = session === (i + 1);
                 const isPrevious = session > (i + 1);
-                const bgColor = isCurrent ? "red" : "green";
+                const bgColor = isCurrent ? "#D00D0D" : "green";
                 jsx.push(<TouchableOpacity disabled={true} style={[styles.sessionButton, isCurrent || isPrevious ? { backgroundColor: bgColor } : {}]} key={i}>
                     <Text style={[styles.sessionButtonText, session >= (i + 1) ? styles.currentSessionText : {}]}>Session {i + 1}</Text>
                 </TouchableOpacity>);
@@ -167,16 +175,17 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, rounds }) => {
             let bgColor = '#F4F4F4';
             let borderColor = "#F4F4F4"
             if (rounds === 3) {
-                if (isCurrentRound && isRest) bgColor = 'green'
-                else if (isCurrentRound) bgColor = 'black';
-                else if (isPrevRound) bgColor = 'green';
+                if (isCurrentRound && isRest) bgColor = '#219653';//
+                else if (isCurrentRound) bgColor = '#333333';
+                else if (isPrevRound) bgColor = '#219653';
             }
             else {
-                if (isCurrentRound && isRest) bgColor = 'green'
-                else if (isCurrentRound) bgColor = 'red';
-                else if (isPrevRound) bgColor = 'green';
+                //if Rounds is more than 3
+                if (isCurrentRound && isRest) bgColor = '#2EAF19'  //if (isCurrentRound = i === (round - 1);) and 
+                else if (isCurrentRound) bgColor = '#D00D0D'; //set the current round to red
+                else if (isPrevRound) bgColor = '#2EAF19'; //set previous round to lightgreen
             }
-            if (rounds !== 3 && i === round && round === rest) { borderColor = 'black'; }
+            if (rounds !== 3 && i === round && round === rest) { borderColor = '#D00D0D'; }//set the next round border to DarkRed 
             else { borderColor = bgColor; }
             jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, { backgroundColor: bgColor, borderWidth: 2, borderColor: borderColor }]} key={i}>
                 <Text style={[styles.roundButtonText, isCurrentRound || isPrevRound ? styles.currentRoundText : {}]}>Round {i + 1}</Text>
@@ -187,7 +196,7 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, rounds }) => {
             //     </TouchableOpacity>);
             // }
             if (rounds === 3 && i !== rounds - 1) {
-                jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isCurrentRound && isRest ? styles.prevRest : isPrevCurrentRound && isRest ? { backgroundColor: 'blue' } : {}]} key={i + 'a'}>
+                jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, isCurrentRound && isRest ? styles.prevRest : isPrevCurrentRound && isRest ? { backgroundColor: '#4A79F2' } : {}]} key={i + 'a'}>
                     <Text style={[styles.roundButtonText, isPrevCurrentRound && isRest ? styles.currentRoundText : {}]}>Rest</Text>
                 </TouchableOpacity>);
             }
@@ -597,7 +606,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'green',
     },
     prevRest: {
-        backgroundColor: 'grey'
+        backgroundColor: '#333333'
     }
 });
 export default RoundsScreen;
