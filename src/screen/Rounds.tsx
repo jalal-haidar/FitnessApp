@@ -147,21 +147,26 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
         var jsx = [];
         for (let i = 0; i < rounds; i++) {
             const isPrevRound = i < (round - 1);
+            const isNextRound = i > (round);
             const isCurrentRound = i === (round - 1);
             const isPrevCurrentRound = i <= (round - 1);
             const isRest = i <= rest - 1;
             const isrestt = rest === round;
             let bgColor = '#F4F4F4';
+            let borderColor = "#F4F4F4"
             if (rounds === 3) {
-                console.log(rest, round, isCurrentRound, isRest, isPrevRound);
                 if (isCurrentRound && isRest) bgColor = 'green'
                 else if (isCurrentRound) bgColor = 'black';
                 else if (isPrevRound) bgColor = 'green';
             }
-            //            const bgColor = rounds === 3 ? isCurrentRound ? 'black' : isPrevRound ? "green" : "red" : "#F4F4F4";
-            // (i === round) will decide which round border should the style be applied to
-            // const border = /*rounds !== 3 && isRest*/ isrestt && (i === round) ? { borderWidth: 2, borderColor: '#D00D0D' } : {}
-            jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, { backgroundColor: bgColor }]} key={i}>
+            else {
+                if (isCurrentRound && isRest) bgColor = 'green'
+                else if (isCurrentRound) bgColor = 'red';
+                else if (isPrevRound) bgColor = 'green';
+            }
+            if (rounds !== 3 && i === round && round === rest) { borderColor = 'black'; }
+            else { borderColor = bgColor; }
+            jsx.push(<TouchableOpacity disabled={true} style={[styles.roundButton, { backgroundColor: bgColor, borderWidth: 2, borderColor: borderColor }]} key={i}>
                 <Text style={[styles.roundButtonText, isCurrentRound || isPrevRound ? styles.currentRoundText : {}]}>Round {i + 1}</Text>
             </TouchableOpacity>);
             // if (rounds === 3 && i !== rounds - 1) {
