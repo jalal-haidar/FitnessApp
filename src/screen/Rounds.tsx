@@ -16,10 +16,9 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
     const defaultBreakTime = 3;
     const [timer, setTimer] = useState<number>(defaultTimerTime);
     const [isRunning, setIsRunning] = useState<boolean>(true);
-    const [rest, setRest] = useState<number>(0);
-    const [round, setRound] = useState<number>(1);
+    const [rest, setRest] = useState<number>(2);
+    const [round, setRound] = useState<number>(3);
     const [session, setSession] = useState<number>(1);
-    const countRef = useRef<NodeJS.Timeout | null>(null);
 
     // function to handle the start button press
     const handleStart = () => {
@@ -33,11 +32,6 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
     // function to handle the continue button press
     const handleContinue = () => {
         setIsRunning(true);
-    };
-    // function to handle the reset button press
-    const handleReset = () => {
-        setTimer(0);
-        setIsRunning(false);
     };
 
     const runTimer = () => {
@@ -65,7 +59,7 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
                             }, 200);
                             return 0;
                         }
-
+                        return defaultTimerTime;
                     }
                     if (rest === round) {
                         setRound(round + 1);
@@ -147,11 +141,9 @@ const Rounds: React.FC<RoundComponentProps> = ({ navigation, route }) => {
         var jsx = [];
         for (let i = 0; i < rounds; i++) {
             const isPrevRound = i < (round - 1);
-            const isNextRound = i > (round);
             const isCurrentRound = i === (round - 1);
             const isPrevCurrentRound = i <= (round - 1);
             const isRest = i <= rest - 1;
-            const isrestt = rest === round;
             let bgColor = '#F4F4F4';
             let borderColor = "#F4F4F4"
             if (rounds === 3) {
