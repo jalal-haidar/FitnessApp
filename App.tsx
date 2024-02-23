@@ -1,20 +1,20 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-  Button,
-  NativeModules,
-  NativeEventEmitter,
-} from 'react-native';
-import HomeScreen from './src/screen/HomeScreen';
-
+import React, { useEffect } from 'react';
+import AppNavigator from './src/navigation/navigator';
+import BootSplash from "react-native-bootsplash";
 export default function App() {
-  return <HomeScreen />;
+  useEffect(() => {
+    const init = async () => {
+      // …do multiple sync or async tasks
+    };
+
+    init().finally(async () => {
+      await BootSplash.hide({ fade: true });
+      console.log("BootSplash has been hidden successfully");
+    });
+  }, []);
+  return <React.StrictMode><AppNavigator /></React.StrictMode>;
 }
 // STYLESHEET
 
